@@ -1,3 +1,9 @@
+.bg-gray {
+  background: #f8f9fa;
+  color: #667189;
+  padding: 1rem;
+}
+
 .section-header {
   padding: 1rem .5rem;
   position: fixed;

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
 import { logout } from '../../helpers/auth'
 
 class Logout extends Component {
