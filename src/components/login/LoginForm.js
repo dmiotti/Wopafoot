@@ -1,72 +1,90 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { login, register } from '../../helpers/auth'
 
 class LoginForm extends Component {
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = {
 			user: {
 				email: '',
 				password: ''
 			},
-			isLoading: false,
+			isLoggingin: false,
+			isRegistering: false,
 			emailInputClass: '',
-			passwordInputClass: ''
+			passwordInputClass: '',
+			error: ''
 		};
 	}
+	isLoading = () => {
+		return this.state.isLoggingin || this.state.isRegistering
+	}
 	onSubmit = (e) => {
-		e.preventDefault();
-		this.setState({ isLoading: true });
+		e.preventDefault()
+		this.setState({ isLoggingin: true, error: '' })
+		login(this.state.user.email, this.state.user.password)
+			.catch((error) => {
+				this.setState({ isLoggingin: false, error: error.message })
+			})
 	}
 	onChange = (e) => {
-		const field = e.target.name;
-		const user = this.state.user;
-		user[field] = e.target.value;
-		this.setState({ user: user });
+		const field = e.target.name
+		const user = this.state.user
+		user[field] = e.target.value
+		this.setState({ user: user })
 	}
 	register = (e) => {
-		e.preventDefault();
+		e.preventDefault()
+		this.setState({ isRegistering: true, error: '' })
+		register(this.state.user.email, this.state.user.password)
+			.catch((error) => {
+				this.setState({ isRegistering: false, error: error.message })
+			})
 	}
 	render() {
-		const { user, isLoading, emailInputClass, passwordInputClass } = this.state;
+		const { user, error, isLoggingin, isRegistering, emailInputClass, passwordInputClass } = this.state
 		return (
 			<form onSubmit={this.onSubmit}>
+				{error && <div className="toast toast-error">{error}</div>}
+
 				{/* Email */}
 				<div className="form-group">
 					<label className="form-label" htmlFor="email">Email</label>
-					<input className={'form-input ' + emailInputClass}
+					<input name="email"
+						className={'form-input ' + emailInputClass}
 						type="email"
 						onChange={this.onChange}
-						name="email"
 						placeholder="Email"
 						value={user.email}
-						disabled={isLoading}/>
+						disabled={this.isLoading()} />
 				</div>
 
 				{/* Password */}
 				<div className="form-group">
 					<label className="form-label" htmlFor="password">Password</label>
 					<div className="has-icon-right">
-						<input className={'form-input ' + passwordInputClass}
+						<input name="password"
+							className={'form-input ' + passwordInputClass}
 							type="password"
 							onChange={this.onChange}
-							name="password"
 							placeholder="Password"
 							value={user.password}
-							disabled={isLoading}/>
+							disabled={this.isLoading()} />
+						{this.isLoading() && <i className="form-icon loading"></i>}
 					</div>
 				</div>
 
 				<div className="form-group">
-					<button className="btn btn-primary" disabled={isLoading}>
-						{isLoading ? 'Logging in...' : 'Login'}
+					<button className="btn btn-primary" disabled={this.isLoading()}>
+						{isLoggingin ? 'Logging in...' : 'Login'}
 					</button>
-					<button className="btn btn-link" onClick={this.register} disabled={isLoading}>
-						Register
+					<button className="btn btn-link" onClick={this.register} disabled={this.isLoading()}>
+						{isRegistering ? 'Registering...' : 'Register'}
 					</button>
 				</div>
 			</form>
-		);
+		)
 	}
 }
 
-export default LoginForm;
+export default LoginForm

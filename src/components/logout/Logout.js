@@ -1,22 +1,14 @@
-import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
+import { logout } from '../../helpers/auth'
 
 class Logout extends Component {
-	constructor(props) {
-		super(props);
-		this.state = { shouldRedirect: false };
-		this.logout = this.logout.bind(this);
-	}
 	render() {
 		return (
-			this.state.shouldRedirect ?
-				<Redirect to={'/login'}/> :
-				<button className="btn btn-primary" onClick={this.logout}>Logout</button>
-		);
+			<button className="btn btn-primary" onClick={this.handleLogout}>Logout</button>
+		)
 	}
-	logout() {
-		this.setState({ shouldRedirect: true });
-	}
+	handleLogout = logout
 }
 
-export default Logout;
+export default Logout

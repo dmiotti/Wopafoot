@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
-import './Nav.css';
+import './Nav.css'
 
-import Logout from '../logout/Logout';
+import Logout from '../logout/Logout'
 
 class Nav extends Component {
 	render() {
@@ -16,7 +16,7 @@ class Nav extends Component {
 							<Link to="/players" className="btn btn-link">Players</Link>
 						</section>
 						<section className="navbar-section">
-							<Logout />
+							{this.props.user && <Logout />}
 						</section>
 					</nav>
 				</section>
@@ -25,4 +25,4 @@ class Nav extends Component {
 	}
 }
 
-export default Nav;
+export default Nav
