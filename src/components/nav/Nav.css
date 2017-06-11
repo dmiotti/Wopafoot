@@ -1,0 +1,13 @@
+.section-header {
+  padding: 1rem .5rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 200;
+}
+.navbar {
+  height: 4rem;
+}
+.navbar-section {
+  padding: 0;
+}

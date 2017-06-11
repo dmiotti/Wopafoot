@@ -1,24 +1,15 @@
-.App {
-  text-align: center;
+/* Hedwig style */
+.bg-gray {
+  background: #f8f9fa;
+  color: #667189;
+  padding: 1rem;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.main {
+  margin-top: 70px;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.btn-link {
+  padding-left: .6rem;
+  padding-right: .6rem;
 }
