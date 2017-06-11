@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { login, register } from '../../helpers/auth'
+import { Link } from 'react-router-dom'
+import { login, resetPassword } from '../../helpers/auth'
 
 class LoginForm extends Component {
 	constructor(props) {
@@ -10,18 +11,19 @@ class LoginForm extends Component {
 				password: ''
 			},
 			isLoggingin: false,
-			isRegistering: false,
+			isResettingPassword: false,
 			emailInputClass: '',
 			passwordInputClass: '',
-			error: ''
+			error: '',
+			message: ''
 		};
 	}
 	isLoading = () => {
-		return this.state.isLoggingin || this.state.isRegistering
+		return this.state.isLoggingin || this.state.isResettingPassword
 	}
 	onSubmit = (e) => {
 		e.preventDefault()
-		this.setState({ isLoggingin: true, error: '' })
+		this.setState({ isLoggingin: true, error: '', message: '' })
 		login(this.state.user.email, this.state.user.password)
 			.catch((error) => {
 				this.setState({ isLoggingin: false, error: error.message })
@@ -33,19 +35,44 @@ class LoginForm extends Component {
 		user[field] = e.target.value
 		this.setState({ user: user })
 	}
-	register = (e) => {
+	handleResetPassword = (e) => {
 		e.preventDefault()
-		this.setState({ isRegistering: true, error: '' })
-		register(this.state.user.email, this.state.user.password)
+		this.setState({
+			isResettingPassword: true,
+			error: '',
+			message: ''
+		})
+		resetPassword(this.state.user.email)
+			.then(() => {
+				this.setState({
+					isResettingPassword: false,
+					message: 'Reset instruction sent'
+				})
+			})
 			.catch((error) => {
-				this.setState({ isRegistering: false, error: error.message })
+				this.setState({
+					isResettingPassword: false,
+					error: error.message
+				})
 			})
 	}
+	toggleToast = (e) => {
+		this.setState({ error: '', message: '' })
+	}
 	render() {
-		const { user, error, isLoggingin, isRegistering, emailInputClass, passwordInputClass } = this.state
+		const { user, error, message, isLoggingin, isResettingPassword, emailInputClass, passwordInputClass } = this.state
 		return (
 			<form onSubmit={this.onSubmit}>
-				{error && <div className="toast toast-error">{error}</div>}
+				{error &&
+					<div className="toast toast-error">
+						<button onClick={this.toggleToast} className="btn btn-clear float-right"></button>
+						{error}
+					</div>}
+				{message &&
+					<div className="toast toast-success">
+						<button onClick={this.toggleToast} className="btn btn-clear float-right"></button>
+						{message}
+					</div>}
 
 				{/* Email */}
 				<div className="form-group">
@@ -78,9 +105,12 @@ class LoginForm extends Component {
 					<button className="btn btn-primary" disabled={this.isLoading()}>
 						{isLoggingin ? 'Logging in...' : 'Login'}
 					</button>
-					<button className="btn btn-link" onClick={this.register} disabled={this.isLoading()}>
-						{isRegistering ? 'Registering...' : 'Register'}
+					<button className="btn btn-link" onClick={this.handleResetPassword} disabled={this.isLoading()}>
+						{isResettingPassword ? 'Resetting password...' : 'Reset password'}
 					</button>
+					<div className="float-right">
+						<Link to="/register" className="btn btn-primary">Register</Link>
+					</div>
 				</div>
 			</form>
 		)

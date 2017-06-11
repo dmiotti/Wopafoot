@@ -5,6 +5,7 @@ import './App.css'
 
 import Nav from './components/nav/Nav'
 import Login from './components/login/Login'
+import Register from './components/register/Register'
 import Players from './components/players/Players'
 
 import { firebaseAuth } from './config/constants'
@@ -34,14 +35,15 @@ class App extends Component {
       <Router>
         <div>
           <Nav user={user} />
-          <div className="main container">
-            <Route exact={true} path="/" render={() => <Redirect to="/players" />} />
-            <Route path="/login" render={() => (
+          <div className='main container'>
+            <Route exact={true} path='/' render={() => <Redirect to='/players' />} />
+            <Route path='/login' render={() => (
               user ?
                 <Redirect to="/players" /> :
                 <Login />
             )}/>
-            <PrivateRoute user={user} path="/players" component={Players} />
+            <Route path='/register' component={Register} />
+            <PrivateRoute user={user} path='/players' component={Players} />
           </div>
         </div>
       </Router>
