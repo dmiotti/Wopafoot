@@ -9,6 +9,7 @@ import Register from './components/register/Register'
 import Players from './components/players/Players'
 
 import { firebaseAuth } from './config/constants'
+import { getUserInfo } from './helpers/auth'
 
 function PrivateRoute ({component: Component, user, ...rest}) {
   return (
@@ -26,7 +27,10 @@ class App extends Component {
   }
   componentDidMount() {
     this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
-      this.setState({ user: user })
+      if (!user) {return;}
+      getUserInfo(user).on('value', (snapshot) => {
+        this.setState({ user: snapshot.val() })
+      })
     })
   }
   render() {
@@ -38,11 +42,11 @@ class App extends Component {
           <div className='main container'>
             <Route exact={true} path='/' render={() => <Redirect to='/players' />} />
             <Route path='/login' render={() => (
-              user ?
-                <Redirect to="/players" /> :
-                <Login />
+              user ? <Redirect to="/players" /> : <Login />
             )}/>
-            <Route path='/register' component={Register} />
+            <Route path='/register' render={() => (
+              user ? <Redirect to="/players" /> : <Register />
+            )}/>
             <PrivateRoute user={user} path='/players' component={Players} />
           </div>
         </div>

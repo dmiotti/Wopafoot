@@ -21,6 +21,9 @@ class Nav extends Component {
 						</section>
 						<section className="navbar-section">
 							{this.props.user &&
+								<span className="nickname">{this.props.user.nickname}</span>}
+
+							{this.props.user &&
 								<button className="btn btn-primary"
 									onClick={this.handleLogout}>Logout</button>}
 						</section>

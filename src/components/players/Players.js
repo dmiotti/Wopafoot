@@ -34,7 +34,7 @@ class Players extends Component {
 						</thead>
 						<tbody>
 							{players.map((player) =>
-								<tr key={player.uid}><td>{player.email}</td></tr>
+								<tr key={player.uid}><td>{player.nickname}</td></tr>
 							)}
 						</tbody>
 					</table>

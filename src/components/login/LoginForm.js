@@ -12,8 +12,6 @@ class LoginForm extends Component {
 			},
 			isLoggingin: false,
 			isResettingPassword: false,
-			emailInputClass: '',
-			passwordInputClass: '',
 			error: '',
 			message: ''
 		};
@@ -60,7 +58,7 @@ class LoginForm extends Component {
 		this.setState({ error: '', message: '' })
 	}
 	render() {
-		const { user, error, message, isLoggingin, isResettingPassword, emailInputClass, passwordInputClass } = this.state
+		const { user, error, message, isLoggingin, isResettingPassword } = this.state
 		return (
 			<form onSubmit={this.onSubmit}>
 				{error &&
@@ -78,7 +76,7 @@ class LoginForm extends Component {
 				<div className="form-group">
 					<label className="form-label" htmlFor="email">Email</label>
 					<input name="email"
-						className={'form-input ' + emailInputClass}
+						className="form-input"
 						type="email"
 						onChange={this.onChange}
 						placeholder="Email"
@@ -91,7 +89,7 @@ class LoginForm extends Component {
 					<label className="form-label" htmlFor="password">Password</label>
 					<div className="has-icon-right">
 						<input name="password"
-							className={'form-input ' + passwordInputClass}
+							className="form-input"
 							type="password"
 							onChange={this.onChange}
 							placeholder="Password"
