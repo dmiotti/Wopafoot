@@ -3,10 +3,12 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 
 import './App.css'
 
-import Nav from './components/nav/Nav'
 import Login from './components/login/Login'
+import Nav from './components/nav/Nav'
 import Register from './components/register/Register'
 import Players from './components/players/Players'
+import Games from './components/games/Games'
+import NewGame from './components/new_game/NewGame'
 
 import { firebaseAuth } from './config/constants'
 import { getUserInfo } from './helpers/auth'
@@ -27,7 +29,8 @@ class App extends Component {
   }
   componentDidMount() {
     this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
-      if (!user) {return;}
+      if (!user) { return; }
+      this.setState({ user: user })
       getUserInfo(user).on('value', (snapshot) => {
         this.setState({ user: snapshot.val() })
       })
@@ -47,6 +50,8 @@ class App extends Component {
             <Route path='/register' render={() => (
               user ? <Redirect to="/players" /> : <Register />
             )}/>
+            <PrivateRoute exact={true} user={user} path='/games' component={Games} />
+            <PrivateRoute user={user} path='/games/new' component={NewGame} />
             <PrivateRoute user={user} path='/players' component={Players} />
           </div>
         </div>

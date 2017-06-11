@@ -17,15 +17,17 @@ class Nav extends Component {
 						<section className="navbar-section">
 							<Link to="/" className="navbar-brand mr-10">Wopafoot</Link>
 							{this.props.user &&
-								<Link to="/players" className="btn btn-link">Players</Link>}
+								<div>
+									<Link to="/players" className="btn btn-link">Players</Link>
+									<Link to="/games" className="btn btn-link">Games</Link>
+								</div>}
 						</section>
 						<section className="navbar-section">
 							{this.props.user &&
-								<span className="nickname">{this.props.user.nickname}</span>}
-
-							{this.props.user &&
-								<button className="btn btn-primary"
-									onClick={this.handleLogout}>Logout</button>}
+								<div>
+									<span className="nickname">{this.props.user.nickname}</span>
+									<button className="btn btn-primary" onClick={this.handleLogout}>Logout</button>
+								</div>}
 						</section>
 					</nav>
 				</section>
