@@ -28,6 +28,8 @@ export function getPlayers () {
 	return ref.child('users')
 }
 
+export function createGame(aTeam, bTeam) { }
+
 export function saveUser (user) {
 	return ref.child(`users/${user.uid}`)
 		.set({
