@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-// Import default css
-import 'spectre.css/dist/spectre.min.css';
-import 'spectre.css/dist/spectre-icons.css';
-
 import './App.css';
 
 import Nav from './components/nav/Nav';
