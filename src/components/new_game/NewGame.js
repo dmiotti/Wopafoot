@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { getPlayers } from '../../helpers/auth'
+import { getPlayers, createGame } from '../../helpers/auth'
 
 import TeamForm from './TeamForm'
 
@@ -41,9 +41,9 @@ class NewGame extends Component {
 			return teams.indexOf(player) === -1
 		})
 	}
-	onSubmit(e) {
+	onSubmit = (e) => {
 		e.preventDefault()
-		alert('Not implemented yet')
+		createGame(this.state.teamA, this.state.teamB)
 	}
 	render() {
 		const { isLoading, teamA, teamB } = this.state

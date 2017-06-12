@@ -35,7 +35,7 @@ class TeamForm extends Component {
     let matched = []
     if (pattern) {
       matched = this.props.pool.filter((player) => {
-        return this.state.players.indexOf(player) < 0 && player.nickname.match(reg)
+        return this.state.players.indexOf(player) < 0 && player.name.match(reg)
       });
     }
     this.setState({ matched: matched, search: pattern })
@@ -52,7 +52,7 @@ class TeamForm extends Component {
 
   					{players.map(player =>
   						<label className="chip" key={player.uid}>
-  				      {player.nickname}
+  				      {player.name}
   				      <button
                   onClick={(e) => {e.preventDefault(); this.removePlayer(player);}}
                   className="btn btn-clear"></button>
@@ -64,7 +64,7 @@ class TeamForm extends Component {
               value={search}
               className="form-input"
               type="text"
-              placeholder="Player nickname" disabled={players.length >= maxPlayers} />
+              placeholder="Player name" disabled={players.length >= maxPlayers} />
   			  </div>
 
           {matched.length > 0 &&
@@ -76,7 +76,7 @@ class TeamForm extends Component {
                   key={player.uid}>
 
                   <div className="tile tile-centered">
-  									<div className="tile-content">{player.nickname}</div>
+  									<div className="tile-content">{player.name}</div>
     			        </div>
       			    </li>
               )}

@@ -31,9 +31,8 @@ class App extends Component {
     this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
       this.setState({ user: user })
       if (!user) { return; }
-      getUserInfo(user).on('value', (snapshot) => {
-        this.setState({ user: snapshot.val() })
-      })
+      getUserInfo(user).on('value', (snapshot) =>
+        this.setState({ user: snapshot.val() }))
     })
   }
   render() {

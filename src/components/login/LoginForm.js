@@ -16,6 +16,9 @@ class LoginForm extends Component {
 			message: ''
 		};
 	}
+	componentDidMount() {
+		this.emailInput.focus()
+	}
 	isLoading = () => {
 		return this.state.isLoggingin || this.state.isResettingPassword
 	}
@@ -76,6 +79,7 @@ class LoginForm extends Component {
 				<div className="form-group">
 					<label className="form-label" htmlFor="email">Email</label>
 					<input name="email"
+						ref={(input) => { this.emailInput = input; }}
 						className="form-input"
 						type="email"
 						onChange={this.onChange}
