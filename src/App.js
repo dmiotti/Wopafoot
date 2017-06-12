@@ -38,6 +38,7 @@ class App extends Component {
   }
   render() {
     const { user } = this.state
+    const defaultRoute = <Redirect to="/games" />
     return (
       <Router>
         <div>
@@ -45,10 +46,10 @@ class App extends Component {
           <div className='main container'>
             <Route exact={true} path='/' render={() => <Redirect to='/players' />} />
             <Route path='/login' render={() => (
-              user ? <Redirect to="/players" /> : <Login />
+              user ? defaultRoute : <Login />
             )}/>
             <Route path='/register' render={() => (
-              user ? <Redirect to="/players" /> : <Register />
+              user ? defaultRoute : <Register />
             )}/>
             <PrivateRoute exact={true} user={user} path='/games' component={Games} />
             <PrivateRoute user={user} path='/games/new' component={NewGame} />
