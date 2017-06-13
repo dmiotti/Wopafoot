@@ -68,12 +68,15 @@ class LoginForm extends Component {
 					<div className="toast toast-error">
 						<button onClick={this.toggleToast} className="btn btn-clear float-right"></button>
 						{error}
-					</div>}
+					</div>
+				}
+
 				{message &&
 					<div className="toast toast-success">
 						<button onClick={this.toggleToast} className="btn btn-clear float-right"></button>
 						{message}
-					</div>}
+					</div>
+				}
 
 				{/* Email */}
 				<div className="form-group">

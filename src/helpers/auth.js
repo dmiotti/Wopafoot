@@ -22,23 +22,30 @@ export function getPlayers () {
 	return ref.child('users')
 }
 
+export function getGames() {
+	return ref.child('games')
+}
+
 export function createGame (teamA, teamB) {
 	const owner = firebaseAuth().currentUser
 	return getUserInfo(owner).once('value', (snapshot) => {
-		let updates = {}
 		const owner = snapshot.val()
 		const gameRef = ref.child('games').push()
-		updates[`games/${gameRef.key}`] = {
-			timestamp: firebase.database.ServerValue.TIMESTAMP,
-			owner: { uid: owner.uid, name: owner.name },
-			status: 'playing'
-		}
 		const normTeam = (team) => ({
 			points: 0,
 			players: team.reduce((acc, p) => ({...acc, [p.uid]: p.name}), {})
 		})
-		const teams = {teamA: normTeam(teamA), teamB: normTeam(teamB)}
-		updates[`teams/${gameRef.key}`] = teams
+
+		let updates = {}
+		updates[`games/${gameRef.key}`] = {
+			timestamp: firebase.database.ServerValue.TIMESTAMP,
+			owner: { uid: owner.uid, name: owner.name },
+			status: 'playing',
+			uid: gameRef.key,
+			teamA: normTeam(teamA),
+			teamB: normTeam(teamB)
+		}
+		console.log(updates)
 		return ref.update(updates)
 	})
 }

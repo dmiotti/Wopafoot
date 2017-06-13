@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 import { getPlayers, createGame } from '../../helpers/auth'
 
@@ -12,7 +12,10 @@ class NewGame extends Component {
 			isLoading: true,
 			players: [],
 			teamA: [],
-			teamB: []
+			teamB: [],
+			error: '',
+			shouldRedirect: false,
+			isCreatingGame: false
 		}
 	}
 	componentDidMount() {
@@ -44,17 +47,32 @@ class NewGame extends Component {
 	onSubmit = (e) => {
 		e.preventDefault()
 		createGame(this.state.teamA, this.state.teamB)
+			.then(() => this.setState({ shouldRedirect: true }))
+			.catch((error) => this.setState({ error: error.message }))
+	}
+	toggleToast = () => {
+		this.setState({ error: '' })
 	}
 	render() {
-		const { isLoading, teamA, teamB } = this.state
+		const { isLoading, isCreatingGame, teamA, teamB, shouldRedirect, error } = this.state
 		return (
+			shouldRedirect ? <Redirect to="/games" /> :
+
 			<div>
 				<h4>New game</h4>
 				{isLoading ?
 					<div className="loading"></div> :
 
 					<div>
-						<form>
+						<form onSubmit={this.onSubmit}>
+
+							{error &&
+								<div className="toast toast-error">
+									<button onClick={this.toggleToast} className="btn btn-clear float-right"></button>
+									{error}
+								</div>
+							}
+
 							<div className="form-group">
 								<TeamForm teamName="Team A"
 									pool={this.remainingPlayers()}
@@ -77,8 +95,10 @@ class NewGame extends Component {
 							</div>
 
 							<div>
-								<button onClick={this.onSubmit} className="btn btn-primary">Create</button>
-								<Link to="/games" className="btn btn-link">Cancel</Link>
+								<button className="btn btn-primary" disabled={isCreatingGame}>
+									{isCreatingGame ? 'Creating...' : 'Create'}
+								</button>
+								<Link to="/games" className="btn btn-link" disabled={isCreatingGame}>Cancel</Link>
 							</div>
 						</form>
 					</div>
