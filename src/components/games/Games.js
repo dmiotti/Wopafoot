@@ -9,10 +9,9 @@ class Games extends Component {
 					<Link to="/games/new" className="btn">New game</Link>
 				</div>
 
-				<h4>Upcoming matches</h4>
-
-				<h4>Past matches</h4>
-
+				<h4>Games</h4>
+				<h5>Playing now</h5>
+				<h5>Finished</h5>
 			</div>
 		)
 	}

@@ -29,11 +29,10 @@ class App extends Component {
   }
   componentDidMount() {
     this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
-      if (!user) { return; }
       this.setState({ user: user })
-      getUserInfo(user).on('value', (snapshot) => {
-        this.setState({ user: snapshot.val() })
-      })
+      if (!user) { return; }
+      getUserInfo(user).on('value', (snapshot) =>
+        this.setState({ user: snapshot.val() }))
     })
   }
   render() {

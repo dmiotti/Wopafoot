@@ -10,11 +10,14 @@ class RegisterForm extends Component {
 			user: {
 				email: '',
 				password: '',
-				nickname: ''
+				name: ''
 			},
 			isRegistering: false,
 			error: ''
 		};
+	}
+	componentDidMount() {
+		this.emailInput.focus()
 	}
 	isLoading = () => {
 		return this.state.isRegistering
@@ -28,8 +31,8 @@ class RegisterForm extends Component {
 	onSubmit = (e) => {
 		e.preventDefault()
 		this.setState({ isRegistering: true, error: '' })
-		var user = this.state.user
-		register(user.nickname, user.email, user.password)
+		const user = this.state.user
+		register(user.name, user.email, user.password)
 			.catch((error) => {
 				this.setState({ isRegistering: false, error: error.message })
 			})
@@ -52,6 +55,7 @@ class RegisterForm extends Component {
 					<label className="form-label" htmlFor="email">Email</label>
 					<input name="email"
 						className="form-input"
+						ref={(input) => { this.emailInput = input; }}
 						type="email"
 						onChange={this.onChange}
 						placeholder="Email"
@@ -71,16 +75,16 @@ class RegisterForm extends Component {
 						disabled={this.isLoading()} />
 				</div>
 
-				{/* Nickname */}
+				{/* Name */}
 				<div className="form-group">
-					<label className="form-label" htmlFor="nickname">Nickname</label>
+					<label className="form-label" htmlFor="name">Name</label>
 					<div className="has-icon-right">
-						<input name="nickname"
+						<input name="name"
 							className="form-input"
 							type="text"
 							onChange={this.onChange}
-							placeholder="Nickname"
-							value={user.nickname}
+							placeholder="Name"
+							value={user.name}
 							disabled={this.isLoading()} />
 						{this.isLoading() && <i className="form-icon loading"></i>}
 					</div>
