@@ -24,7 +24,7 @@ export function createGame (teamA, teamB) {
 		const owner = snapshot.val()
 		const gameRef = ref.child('games').push()
 		const normTeam = (team) => ({
-			points: 0,
+			score: 0,
 			players: team.reduce((acc, p) => ({...acc, [p.uid]: p.name}), {})
 		})
 

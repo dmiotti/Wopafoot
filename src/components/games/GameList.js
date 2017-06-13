@@ -23,7 +23,7 @@ class GameList extends Component {
               <tr key={game.uid}>
                 <td>{this.formatTeamPlayers(game.teamA.players)}</td>
                 <td>{this.formatTeamPlayers(game.teamB.players)}</td>
-                <td>{game.teamA.points}/{game.teamB.points}</td>
+                <td>{game.teamA.score}/{game.teamB.score}</td>
                 <td><Link to={'/games/' + game.uid} className="btn btn-link">View</Link></td>
               </tr>
             )}

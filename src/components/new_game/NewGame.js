@@ -21,7 +21,7 @@ class NewGame extends Component {
 		}
 	}
 	componentDidMount() {
-		ref.child('users').on('value', (snapshot) => {
+		ref.child('users').once('value', (snapshot) => {
 			let players = []
 			snapshot.forEach(function(childSnapshot) {
 				players.push(childSnapshot.val());

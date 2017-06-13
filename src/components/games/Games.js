@@ -13,29 +13,27 @@ class Games extends Component {
 		this.state = { playing: [], finished: [] }
 	}
 	componentDidMount() {
-		this.listenForGames()
+		this.gamesRef = ref.child('games').orderByChild('timestamp')
+		this.gamesRef.on('value', this.onGamesChanged)
 	}
 	componentWillUnmount() {
-		ref.off('value', this.gamesListener)
+		this.gamesRef.off('value', this.onGamesChanged)
 	}
-	listenForGames() {
-		let query = ref.child('games').orderByChild('timestamp')
-		this.gamesListener = query.on('value', (snapshot) => {
-			let playing = this.state.playing
-			let finished = this.state.finished
-			snapshot.forEach((child) => {
-				let game = child.val()
-				switch (game.status) {
-					case 'finished':
-						finished = [game, ...finished]
-						break
-					case 'playing':
-						playing = [game, ...playing]
-						break
-					default:
-						break
-				}
-			})
+	onGamesChanged = (snapshot) => {
+		let playing = this.state.playing
+		let finished = this.state.finished
+		snapshot.forEach((child) => {
+			let game = child.val()
+			switch (game.status) {
+				case 'finished':
+					finished = [game, ...finished]
+					break
+				case 'playing':
+					playing = [game, ...playing]
+					break
+				default:
+					break
+			}
 			this.setState({ playing: playing, finished: finished })
 		})
 	}

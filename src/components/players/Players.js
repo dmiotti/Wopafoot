@@ -11,16 +11,18 @@ class Players extends Component {
 		}
 	}
 	componentDidMount() {
-		this.playersListener = ref.child('users').on('value', (snapshot) => {
-			let players = this.state.players
-			snapshot.forEach((child) => {
-				players.push(child.val())
-			})
-			this.setState({ isLoading: false, players: players })
-		})
+		this.playersRef = ref.child('users')
+		this.playersRef.on('value', this.onPlayersChanged)
 	}
 	componentWillUnmount() {
-		ref.off('value', this.playersListener)
+		this.playersRef.off('value', this.onPlayersChanged)
+	}
+	onPlayersChanged = (snapshot) => {
+		let players = this.state.players
+		snapshot.forEach((child) => {
+			players.push(child.val())
+		})
+		this.setState({ isLoading: false, players: players })
 	}
 	render() {
 		const { players, isLoading } = this.state
