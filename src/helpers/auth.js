@@ -18,14 +18,6 @@ export function getUserInfo (user) {
 	return ref.child(`users/${user.uid}`)
 }
 
-export function getPlayers () {
-	return ref.child('users')
-}
-
-export function getGames() {
-	return ref.child('games')
-}
-
 export function createGame (teamA, teamB) {
 	const owner = firebaseAuth().currentUser
 	return getUserInfo(owner).once('value', (snapshot) => {
@@ -45,7 +37,6 @@ export function createGame (teamA, teamB) {
 			teamA: normTeam(teamA),
 			teamB: normTeam(teamB)
 		}
-		console.log(updates)
 		return ref.update(updates)
 	})
 }

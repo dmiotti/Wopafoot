@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 
-import { getPlayers, createGame } from '../../helpers/auth'
+import { createGame } from '../../helpers/auth'
+
+import { ref } from '../../config/constants'
 
 import TeamForm from './TeamForm'
 
@@ -19,7 +21,7 @@ class NewGame extends Component {
 		}
 	}
 	componentDidMount() {
-		getPlayers().on('value', (snapshot) => {
+		ref.child('users').on('value', (snapshot) => {
 			let players = []
 			snapshot.forEach(function(childSnapshot) {
 				players.push(childSnapshot.val());

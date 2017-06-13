@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 
 import './App.css'
 
@@ -9,6 +9,7 @@ import Register from './components/register/Register'
 import Players from './components/players/Players'
 import Games from './components/games/Games'
 import NewGame from './components/new_game/NewGame'
+import Game from './components/game/Game'
 
 import { firebaseAuth } from './config/constants'
 import { getUserInfo } from './helpers/auth'
@@ -43,7 +44,7 @@ class App extends Component {
         <div>
           <Nav user={user} />
           <div className='main container'>
-            <Route exact={true} path='/' render={() => <Redirect to='/players' />} />
+            <Route exact={true} path='/' render={() => defaultRoute} />
             <Route path='/login' render={() => (
               user ? defaultRoute : <Login />
             )}/>
@@ -51,7 +52,10 @@ class App extends Component {
               user ? defaultRoute : <Register />
             )}/>
             <PrivateRoute exact={true} user={user} path='/games' component={Games} />
-            <PrivateRoute user={user} path='/games/new' component={NewGame} />
+            <Switch>
+              <PrivateRoute exact={true} user={user} path='/games/new' component={NewGame} />
+              <PrivateRoute user={user} path='/games/:uid' component={Game} />
+            </Switch>
             <PrivateRoute user={user} path='/players' component={Players} />
           </div>
         </div>

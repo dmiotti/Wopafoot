@@ -5,7 +5,7 @@ import { ref } from '../../config/constants'
 
 import GameList from './GameList'
 
-import './Game.css'
+import './Games.css'
 
 class Games extends Component {
 	constructor(props) {
@@ -13,14 +13,31 @@ class Games extends Component {
 		this.state = { playing: [], finished: [] }
 	}
 	componentDidMount() {
-		this.gamesListener = ref.child('games').on('child_added', (snapshot) => {
-			let playing = this.state.playing
-			playing.push(snapshot.val())
-			this.setState({ playing: playing })
-		})
+		this.listenForGames()
 	}
 	componentWillUnmount() {
-		ref.off('child_added', this.gamesListener)
+		ref.off('value', this.gamesListener)
+	}
+	listenForGames() {
+		let query = ref.child('games').orderByChild('timestamp')
+		this.gamesListener = query.on('value', (snapshot) => {
+			let playing = this.state.playing
+			let finished = this.state.finished
+			snapshot.forEach((child) => {
+				let game = child.val()
+				switch (game.status) {
+					case 'finished':
+						finished = [game, ...finished]
+						break
+					case 'playing':
+						playing = [game, ...playing]
+						break
+					default:
+						break
+				}
+			})
+			this.setState({ playing: playing, finished: finished })
+		})
 	}
 	render() {
 		const { playing, finished } = this.state
