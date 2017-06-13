@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "wopafoot-staging"
+    "default": "wopafoot-staging",
+    "production": "wopafoot"
   }
 }

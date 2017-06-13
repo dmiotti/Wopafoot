@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+yarn run build
+
+firebase use $1
+firebase deploy -p build
