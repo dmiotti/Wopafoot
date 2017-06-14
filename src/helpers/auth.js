@@ -25,7 +25,7 @@ export function createGame (teamA, teamB) {
 		const gameRef = ref.child('games').push()
 		const normTeam = (team) => ({
 			score: 0,
-			players: team.reduce((acc, p) => ({...acc, [p.uid]: p.name}), {})
+			players: team.reduce((acc, p) => ({...acc, [p.uid]: {name: p.name, score: 0}}), {})
 		})
 
 		let updates = {}

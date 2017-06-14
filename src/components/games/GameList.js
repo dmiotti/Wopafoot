@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 class GameList extends Component {
-  formatTeamPlayers = (p) => Object.keys(p).map((k) => p[k]).join(' & ')
+  formatTeamPlayers = (p) => Object.keys(p).map((k) => p[k].name).join(' & ')
   render() {
     const { name, games } = this.props
     return (

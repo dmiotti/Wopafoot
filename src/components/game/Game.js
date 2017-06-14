@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 
 import { ref } from '../../config/constants'
 
+import GamePlayerScorer from './GamePlayerScorer'
+
 class Game extends Component {
   constructor(props) {
     super(props)
@@ -21,12 +23,19 @@ class Game extends Component {
     let game = snapshot.val()
     this.setState({ isLoading: false, game: game })
   }
-	incrementScore = (team, score, by = 1) => {
-    let uid = this.state.game.uid
-    let updates = { [`games/${uid}/${team}/score`]: score + by }
-    ref.update(updates)
+	incrementScore = (teamName, teamScore, player, by) => {
+    let gameUid = this.state.game.uid
+    ref.update({
+      [`games/${gameUid}/${teamName}/score`]: teamScore + by,
+      [`games/${gameUid}/${teamName}/players/${player.uid}/score`]: player.score + by
+    })
 	}
-  formatTeamPlayers = (p) => Object.keys(p).map((k) => p[k]).join(' & ')
+  playersForTeam = (team) => {
+    return Object.keys(team.players).map(k => (
+      {uid: k, name: team.players[k].name, score: team.players[k].score}
+    ))
+  }
+  formatTeamPlayers = (p) => Object.keys(p).map(k => p[k].name).join(' & ')
   render() {
     const { isLoading, game } = this.state
     return (
@@ -49,17 +58,25 @@ class Game extends Component {
                 <tr>
                   <td>
                     <p>Score: {game.teamA.score}</p>
-                    <div className="btn-group btn-group-block">
-                      <button onClick={() => this.incrementScore('teamA', game.teamA.score, -1)} className="btn">-</button>
-                      <button onClick={() => this.incrementScore('teamA', game.teamA.score)} className="btn">+</button>
-                    </div>
+                    {this.playersForTeam(game.teamA).map(player => {
+                      return <GamePlayerScorer
+                        key={player.uid}
+                        player={player}
+                        onIncrementScore={(by) =>
+                          this.incrementScore('teamA', game.teamA.score, player, by)
+                        } />
+                    })}
                   </td>
                   <td>
                     <p>Score: {game.teamB.score}</p>
-                    <div className="btn-group btn-group-block">
-                      <button onClick={() => this.incrementScore('teamB', game.teamB.score, -1)} className="btn">-</button>
-                      <button onClick={() => this.incrementScore('teamB', game.teamB.score)} className="btn">+</button>
-                    </div>
+                    {this.playersForTeam(game.teamB).map(player => {
+                      return <GamePlayerScorer
+                        key={player.uid}
+                        player={player}
+                        onIncrementScore={(by) =>
+                          this.incrementScore('teamB', game.teamB.score, player, by)
+                        } />
+                    })}
                   </td>
                 </tr>
               </tbody>
